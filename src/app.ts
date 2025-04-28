@@ -4,8 +4,19 @@ import fastify from 'fastify'
 import { ZodError } from 'zod'
 import { env } from '@/env'
 import { usersRoutes } from '@/http/controllers/users/routes'
+import { eventsRoutes } from './http/controllers/events/routes'
+import cors from '@fastify/cors'
 
-export const app = fastify()
+
+export const app = fastify({
+  logger: true
+})
+
+
+app.register(cors, {
+  allowedHeaders: '*',
+  origin: '*'
+})
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
@@ -20,7 +31,7 @@ app.register(fastifyJwt, {
 app.register(fastifyCookie)
 
 app.register(usersRoutes)
-
+app.register(eventsRoutes)
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
     return reply

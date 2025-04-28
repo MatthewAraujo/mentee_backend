@@ -27,7 +27,7 @@ model Event {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user User[]
+  users User[]
 
   @@map("events")
 }
